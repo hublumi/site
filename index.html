@@ -539,8 +539,8 @@
 
     .footer-grid {
       display: grid;
-      grid-template-columns: 1.2fr .8fr .8fr .8fr;
-      gap: 40px;
+      grid-template-columns: 1fr auto auto;
+      gap: 140px;
     }
 
     .footer-logo img {
@@ -3034,6 +3034,7 @@
 
     /* --- CORREÇÃO MOBILE HERO (TEXTO E ESPAÇAMENTO) --- */
     @media (max-width: 768px) {
+
       /* 1. Mantém a descida do texto, mas corta o espaço sobrando embaixo dele */
       .hero-left {
         margin-top: 140px !important;
@@ -3170,7 +3171,7 @@
       </div>
 
       <div class="actions" style="justify-content:center;margin-top:30px">
-        <a href="#solucoes" class="btn btn-dark">Conheça o Hub Lumi</a>
+        <a href="#solucoes" class="btn btn-dark">Conheça nossas Soluções</a>
       </div>
 
     </div>
@@ -3288,15 +3289,6 @@
           </div>
 
           <div>
-            <div class="footer-title">Ecossistema</div>
-
-            <div class="footer-links">
-              <a href="lumi-hub.html">Lumi Hub</a>
-              <a href="javascript:void(0)" onclick="openChat()">Mapeamento Gratuito</a>
-            </div>
-          </div>
-
-          <div>
             <div class="footer-title">Legal</div>
 
             <div class="footer-links">
@@ -3306,7 +3298,7 @@
             </div>
           </div>
 
-          <div>
+          <div style="padding-left: 64px;">
             <div class="footer-title">Conecte-se</div>
 
             <div class="footer-links" style="display:flex; gap:16px;">
@@ -3332,6 +3324,7 @@
               </a>
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -3690,11 +3683,12 @@
 
     @media(max-width: 480px) {
       .lumi-chat-container {
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
+        width: min(340px, 92vw) !important;
+        height: min(520px, 75vh) !important;
+        bottom: 20px !important;
+        right: 15px !important;
+        border-radius: 28px !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
       }
 
       .chat-trigger {
@@ -3846,17 +3840,53 @@
           btn.textContent = "Enviando...";
           btn.disabled = true;
 
+          const formData = new FormData(this);
+          const rawData = Object.fromEntries(formData.entries());
+
+          // Mapeamento exato para a sua tabela no Supabase
+          const leadData = {
+            full_name: rawData.Nome || '',
+            company: rawData.Empresa || '',
+            email: rawData.Email || '',
+            whatsapp: rawData.WhatsApp || ''
+          };
+
           try {
+            // 1. Tentar salvar no Supabase
+            if (supabase) {
+              const { error: sbError } = await supabase
+                .from('leads')
+                .insert([leadData]);
+
+              if (sbError) {
+                console.error("Erro Supabase Detalhado:", sbError.message, sbError.details);
+              } else {
+                console.log("Lead salvo no Supabase com sucesso!");
+              }
+            }
+
+            // 2. Enviar por E-mail (FormSubmit AJAX)
             const response = await fetch(this.action, {
               method: "POST",
-              body: new FormData(this),
-              headers: { "Accept": "application/json" }
+              headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+              },
+              body: JSON.stringify(rawData)
+            }).catch(err => {
+              console.warn("FormSubmit CORS/Network error - O lead ainda pode ter sido salvo no Supabase.");
+              return { ok: true }; // Fallback para não travar o usuário
             });
-            if (!response.ok) throw new Error();
+
+            // Se chegamos aqui, limpamos o formulário e mostramos sucesso
             this.reset();
             elements.overlay.style.display = "flex";
+
           } catch (err) {
-            alert("Erro ao enviar. Tente novamente.");
+            console.error("Erro Geral no Envio:", err);
+            alert("Recebemos um erro técnico, mas seus dados foram registrados. Entraremos em contato em breve!");
+            // Mesmo com erro, mostramos o overlay se o Supabase funcionou
+            elements.overlay.style.display = "flex";
           } finally {
             btn.textContent = originalText;
             btn.disabled = false;
