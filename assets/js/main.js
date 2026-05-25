@@ -1,8 +1,8 @@
     // Configuration
     const CONFIG = {
-      SUPABASE_URL: "https://ffmkstckozrrfziszwqj.supabase.co",
-      SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmbWtzdGNrb3pycmZ6aXN6d3FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA5NDEsImV4cCI6MjA5NDE4Njk0MX0._oq4qzFxpYfjg6cpM5QWwAraqvayxncyJuFZg-3ZeC4",
-      GEMINI_API_KEY: "AIzaSyC0muQm6t1ig98irpkBvd5wOC0cFrh8uog",
+      SUPABASE_URL: "https://ffmkstckozrrfziszwqj.supabase.co", // OK ficar no front-end
+      SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZmbWtzdGNrb3pycmZ6aXN6d3FqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2MTA5NDEsImV4cCI6MjA5NDE4Njk0MX0._oq4qzFxpYfjg6cpM5QWwAraqvayxncyJuFZg-3ZeC4", // OK ficar no front-end (com RLS ativado no Supabase)
+      GEMINI_API_KEY: "", // REMOVIDO POR SEGURANÇA! (Nunca deixe no frontend)
       GEMINI_MODEL: "gemini-1.5-flash"
     };
 
