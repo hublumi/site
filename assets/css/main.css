@@ -3383,18 +3383,33 @@
       }
     }
 
+    /* Decorative purple line in white section */
+    .section-deco-line {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+
     /* Scroll Line Follow Scroll Motion */
     .scroll-line-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
-      z-index: 3;
+      z-index: 1;
       overflow: visible;
     }
 
     .scroll-line-container svg {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       overflow: visible;
@@ -3402,14 +3417,13 @@
 
     .scroll-follow-path {
       fill: none;
-      stroke: #7c3aed;
-      stroke-width: 8px;
+      stroke: #611cfc;
+      stroke-width: 10px;
       stroke-linecap: round;
       stroke-linejoin: round;
-      opacity: 0.85;
     }
 
-    /* Bring interactive content above SVG overlay */
+    /* Bring all content, sections, and navbar to foreground */
     .navbar,
     .hero-grid,
     .section > .container,
@@ -3419,7 +3433,7 @@
     .chat-trigger,
     .lumi-chat-container {
       position: relative;
-      z-index: 4;
+      z-index: 2;
     }
 
     @media (max-width: 980px) {
@@ -3427,7 +3441,6 @@
         display: none !important;
       }
     }
-
 
 
 /* ============================================================
