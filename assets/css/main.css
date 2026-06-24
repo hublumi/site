@@ -3429,8 +3429,7 @@
       stroke-linejoin: round;
     }
 
-    /* Bring all content, sections, and navbar to foreground */
-    .navbar,
+    /* Bring all content, sections to foreground */
     .hero-grid,
     .section > .container,
     .cta-box > *,
