@@ -133,7 +133,7 @@
           const formData = new FormData(this);
           const rawData = Object.fromEntries(formData.entries());
 
-          // Mapeamento exato para a tabela 'hl_briefings' do seu Supabase
+          // Mapeamento exato para a tabela 'hl_leads' do seu Supabase
           const leadData = {
             contact_name: rawData.Nome || '',
             company_name: rawData.Empresa || '',
@@ -144,17 +144,17 @@
           };
 
           try {
-            // 1. Prioridade Máxima: Salvar no Supabase (Tabela: hl_briefings)
+            // 1. Prioridade Máxima: Salvar no Supabase (Tabela: hl_leads)
             let supabaseSuccess = false;
             if (supabase) {
               const { error: sbError } = await supabase
-                .from('hl_briefings')
+                .from('hl_leads')
                 .insert([leadData]);
 
               if (sbError) {
                 console.error("Erro Supabase Detalhado:", sbError.message);
               } else {
-                console.log("Briefing salvo no Supabase (hl_briefings) com sucesso!");
+                console.log("Contato salvo no Supabase (hl_leads) com sucesso!");
                 supabaseSuccess = true;
               }
             }

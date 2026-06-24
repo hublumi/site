@@ -35,7 +35,42 @@ pages = {
     "mapeamento.html": {
         "title": "Mapeamento Gratuito",
         "subtitle": "Descubra o potencial do seu negócio",
-        "content": "<p>Oferecemos um mapeamento gratuito dos seus processos para identificar os maiores gargalos e onde a automação pode gerar o maior impacto no seu negócio.</p><a href='#contato' class='btn btn-primary' style='margin-top:20px; background:#611cfc; color:white;'>Agendar Meu Mapeamento</a>"
+        "content": """
+    <!-- Progress Bar -->
+    <div class="progress-wrap" id="progressWrap" style="display:none;">
+      <div class="progress-shell">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div class="progress-text" id="progressText">Etapa 1</div>
+    </div>
+
+    <!-- Wizard Section -->
+    <main class="form-section" id="briefing" style="background: white; color: #09090b; min-height: 40vh; padding: 60px 0;">
+      <div class="container" style="max-width: 800px; margin: 0 auto;">
+        <div class="intro-box" id="introBox">
+          <h2>Diagnóstico para novas soluções</h2>
+          <p style="margin-bottom: 20px; line-height: 1.6;">Este briefing ajuda a HubLumi a entender a realidade atual da empresa, mapear gargalos e estruturar caminhos de automação, integração, IA ou sistemas sob medida. Leva menos de 5 minutos.</p>
+          <a href="#briefing" class="btn btn-primary" id="btnStartIntro" style="background:#611cfc; color:white;">Iniciar Diagnóstico</a>
+        </div>
+
+        <div class="resume-banner" id="resumeBanner" style="display:none;">
+          <div class="resume-banner__content">
+            <div>
+              <strong>Você tem um diagnóstico em andamento.</strong>
+              <p>Deseja continuar de onde parou?</p>
+            </div>
+          </div>
+          <div class="resume-banner__actions">
+            <button class="wz-btn wz-btn--primary" id="btnResume">Continuar</button>
+            <button class="wz-btn wz-btn--ghost" id="btnRestart">Recomeçar</button>
+          </div>
+        </div>
+
+        <div id="wizardMount"></div>
+        <div id="reviewMount" style="display:none;"></div>
+      </div>
+    </main>
+"""
     },
     "termos-de-uso.html": {
         "title": "Termos de Uso",
@@ -60,7 +95,10 @@ pages = {
 }
 
 for filename, data in pages.items():
-    page_content = f"""
+    if filename == "mapeamento.html":
+        page_content = data['content']
+    else:
+        page_content = f"""
     <section class="hero" style="min-height: 40vh; padding: 180px 0 60px;">
       <div class="container">
         <div class="section-head" style="max-width: 800px; text-align: left;">
@@ -79,8 +117,14 @@ for filename, data in pages.items():
     # Optional: adjust the <title> tag in the header for each page
     custom_header = header.replace("<title>HubLumi</title>", f"<title>{data['title']} - HubLumi</title>")
     
+    if filename == "mapeamento.html":
+        custom_header = custom_header.replace("</head>", '<link rel="stylesheet" href="assets/css/main.css">\n</head>')
+        custom_footer = footer.replace("</body>", '<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>\n<script type="module" src="assets/js/briefing.js"></script>\n</body>')
+    else:
+        custom_footer = footer
+        
     with open(filename, "w", encoding="utf-8") as f:
-        f.write(custom_header + page_content + footer)
+        f.write(custom_header + page_content + custom_footer)
 
 print(f"Successfully generated {len(pages)} pages.")
 
