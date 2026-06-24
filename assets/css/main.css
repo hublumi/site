@@ -3445,8 +3445,8 @@
     @media (max-width: 980px) {
       .scroll-line-container {
         display: block !important;
-        width: 600vw;
-        left: -250vw;
+        width: 100%;
+        left: 0;
       }
 
       .scroll-follow-path {

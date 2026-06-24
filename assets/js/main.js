@@ -192,33 +192,69 @@
       }
 
       // SVG Scroll Animation — draw path as user scrolls
+      const svg  = document.getElementById('scroll-line-svg');
       const path = document.querySelector('.scroll-follow-path');
-      if (path) {
-        const pathLength = path.getTotalLength();
 
-        // Show the initial knot area (30% drawn) at page load
-        path.style.strokeDasharray = pathLength + ' ' + pathLength;
-        path.style.strokeDashoffset = pathLength * 0.70; // 30% drawn at load
+      if (svg && path) {
 
-        let ticking = false;
-
-        const updateScrollPath = () => {
-          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-          // From 30% drawn (scroll=0) to 100% drawn (scroll=100%)
-          const drawn = pathLength * (0.30 + scrollProgress * 0.70);
-          path.style.strokeDashoffset = pathLength - drawn;
-          ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-          if (!ticking) {
-            requestAnimationFrame(updateScrollPath);
-            ticking = true;
+        // --- Mobile viewBox fix ---
+        // On mobile, the body is taller and the viewport narrower.
+        // To avoid distortion we compute a viewBox whose X-span matches the
+        // Y-span ratio so the knot looks circular (same scale in both axes).
+        function applyViewBox() {
+          const isMobile = window.innerWidth < 980;
+          if (isMobile) {
+            // Wait one frame so scrollHeight is final after layout
+            requestAnimationFrame(() => {
+              const bodyH  = document.documentElement.scrollHeight;
+              const vbH    = 2730;   // our viewBox height
+              const scaleY = bodyH / vbH;          // px per SVG-unit (vertical)
+              const vbW    = window.innerWidth / scaleY; // SVG-units visible horizontally
+              const knotCX = 700;                  // horizontal centre of knot cluster
+              const vbMinX = knotCX - vbW / 2;
+              svg.setAttribute('viewBox', `${vbMinX} -50 ${vbW} ${vbH}`);
+              svg.setAttribute('preserveAspectRatio', 'none');
+              initAnimation();
+            });
+          } else {
+            svg.setAttribute('viewBox', '-320 -50 1400 2730');
+            svg.setAttribute('preserveAspectRatio', 'none');
+            initAnimation();
           }
-        }, { passive: true });
+        }
 
-        updateScrollPath(); // Draw initial state
+        function initAnimation() {
+          const pathLength = path.getTotalLength();
+          path.style.strokeDasharray  = pathLength + ' ' + pathLength;
+          path.style.strokeDashoffset = pathLength * 0.70; // 30% drawn at load
+
+          let ticking = false;
+
+          function updateScrollPath() {
+            const maxScroll     = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+            const drawn = pathLength * (0.30 + scrollProgress * 0.70);
+            path.style.strokeDashoffset = pathLength - drawn;
+            ticking = false;
+          }
+
+          // Remove previous scroll listener before re-adding
+          window.removeEventListener('scroll', window._svgScrollHandler);
+          window._svgScrollHandler = () => {
+            if (!ticking) {
+              requestAnimationFrame(updateScrollPath);
+              ticking = true;
+            }
+          };
+          window.addEventListener('scroll', window._svgScrollHandler, { passive: true });
+
+          updateScrollPath();
+        }
+
+        applyViewBox();
+
+        // Re-apply on resize (orientation change on mobile)
+        window.addEventListener('resize', applyViewBox, { passive: true });
       }
 
     });
