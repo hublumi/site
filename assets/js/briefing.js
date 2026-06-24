@@ -638,4 +638,8 @@ function init() {
 }
 
 // Executar após carregamento do DOM
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
