@@ -613,7 +613,7 @@
 
     @media(max-width:980px) {
       .hero {
-        padding: 90px 0 40px !important;
+        padding: 130px 0 40px !important;
         align-items: flex-start !important;
         text-align: center;
       }
@@ -2120,7 +2120,7 @@
 
     @media(max-width:980px) {
       .hero {
-        padding: 20px 0 50px !important;
+        padding: 130px 0 50px !important;
       }
 
       .section,
@@ -2150,7 +2150,7 @@
 
     @media(max-width:560px) {
       .hero {
-        padding: 15px 0 45px !important;
+        padding: 130px 0 45px !important;
       }
 
       .section,

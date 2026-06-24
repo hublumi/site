@@ -3,16 +3,28 @@ import { FLOW_GROUPS } from './flow-data.js';
 
 // ─── Supabase Configuration ──────────────────────────────────────────────────
 let supabase = null;
-try {
-  if (window.supabase) {
-    supabase = window.supabase.createClient(
-      import.meta.env.VITE_SUPABASE_URL || "",
-      import.meta.env.VITE_SUPABASE_ANON_KEY || ""
-    );
+
+function getSupabase() {
+  if (supabase) return supabase;
+  try {
+    if (window.supabase) {
+      const url = (import.meta.env.VITE_SUPABASE_URL || "").replace(/^["']|["']$/g, "");
+      const key = (import.meta.env.VITE_SUPABASE_ANON_KEY || "").replace(/^["']|["']$/g, "");
+      if (!url || !key) {
+        console.warn("Supabase URL or Anon Key is missing in environment variables.");
+        return null;
+      }
+      supabase = window.supabase.createClient(url, key);
+      console.log("Supabase client initialized successfully.");
+    } else {
+      console.warn("window.supabase is not defined on the window object.");
+    }
+  } catch (e) {
+    console.error("Failed to initialize Supabase in briefing.js:", e);
   }
-} catch (e) {
-  console.error("Failed to initialize Supabase in briefing.js:", e);
+  return supabase;
 }
+
 
 // ─── Rate limiter (client-side guard) ─────────────────────────────────────────
 const RATE_KEY = 'hublumi_submission_limit';
@@ -270,8 +282,9 @@ function renderStep(group, direction = 'forward') {
 
       try {
         // 1. Salvar os dados básicos de identificação na tabela 'briefings'
-        if (supabase) {
-          await supabase
+        const client = getSupabase();
+        if (client) {
+          await client
             .from('briefings')
             .insert([{
               contact_name: nameVal,
@@ -284,13 +297,17 @@ function renderStep(group, direction = 'forward') {
         }
 
         // 2. Buscar histórico do usuário para exibição
-        const { data: pastBriefings, error } = await supabase
-          .from('hl_briefings')
-          .select('*')
-          .ilike('email', emailVal)
-          .order('created_at', { ascending: false });
+        let pastBriefings = null;
+        if (client) {
+          const { data, error } = await client
+            .from('hl_briefings')
+            .select('*')
+            .ilike('email', emailVal)
+            .order('created_at', { ascending: false });
 
-        if (error) throw error;
+          if (error) throw error;
+          pastBriefings = data;
+        }
 
         if (pastBriefings && pastBriefings.length > 0) {
           renderHistory(pastBriefings, emailVal, nameVal, stepAnswers);
@@ -545,8 +562,9 @@ async function handleSubmit() {
 
     // 1. Salvar os dados completos na tabela 'hl_briefings'
     let dbError = null;
-    if (supabase) {
-      const { error } = await supabase
+    const client = getSupabase();
+    if (client) {
+      const { error } = await client
         .from('hl_briefings')
         .insert([{
           company_name: payload['Nome da empresa'],
@@ -558,6 +576,8 @@ async function handleSubmit() {
           file_urls: []
         }]);
       dbError = error;
+    } else {
+      dbError = new Error("Supabase client is not initialized.");
     }
 
     if (dbError) throw new Error('Erro ao salvar no banco: ' + dbError.message);
