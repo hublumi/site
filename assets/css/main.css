@@ -3445,10 +3445,12 @@
     @media (max-width: 980px) {
       .scroll-line-container {
         display: block !important;
+        width: 600vw;
+        left: -250vw;
       }
 
       .scroll-follow-path {
-        stroke-width: 6px;
+        stroke-width: 10px;
       }
     }
 
