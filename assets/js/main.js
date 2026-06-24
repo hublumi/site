@@ -190,4 +190,34 @@
           }
         });
       }
+
+      // SVG Scroll Animation — draw path as user scrolls
+      const path = document.querySelector('.scroll-follow-path');
+      if (path) {
+        const pathLength = path.getTotalLength();
+
+        // Initialize: show knot (start at 15% drawn), full path hidden beyond
+        path.style.strokeDasharray = pathLength + ' ' + pathLength;
+        path.style.strokeDashoffset = pathLength * 0.85; // 15% visible at load
+
+        let ticking = false;
+
+        const updateScrollPath = () => {
+          const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+          // From 15% drawn (scroll=0) to 100% drawn (scroll=100%)
+          const drawn = pathLength * (0.15 + scrollProgress * 0.85);
+          path.style.strokeDashoffset = pathLength - drawn;
+          ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+          if (!ticking) {
+            requestAnimationFrame(updateScrollPath);
+            ticking = true;
+          }
+        }, { passive: true });
+
+        updateScrollPath(); // Draw initial state
+      }
     });

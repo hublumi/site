@@ -3381,6 +3381,50 @@
       }
     }
 
+    /* Scroll Line Follow Scroll Motion */
+    .scroll-line-container {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      overflow: visible;
+    }
+
+    .scroll-line-container svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .scroll-follow-path {
+      fill: none;
+      stroke: #611cfc;
+      stroke-width: 2.5px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Bring all content, sections, and navbar to foreground */
+    .navbar,
+    .hero-grid,
+    .section > .container,
+    .cta-box > *,
+    .contact-grid,
+    footer > .container,
+    .chat-trigger,
+    .lumi-chat-container {
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 980px) {
+      .scroll-line-container {
+        display: none !important;
+      }
+    }
+
 /* ============================================================
    WIZARD STYLES
    ============================================================ */
