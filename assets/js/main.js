@@ -191,23 +191,38 @@
         });
       }
 
-      // SVG Scroll Animation — draw path as user scrolls
+      // SVG Scroll Animation — fixed viewport, path follows scroll via translateY
       const path = document.querySelector('.scroll-follow-path');
-      if (path) {
+      const svg = document.getElementById('scroll-line-svg');
+      if (path && svg) {
         const pathLength = path.getTotalLength();
 
-        // Show the initial knot area (30% drawn) at page load
+        // Start with knot area visible (20% drawn)
         path.style.strokeDasharray = pathLength + ' ' + pathLength;
-        path.style.strokeDashoffset = pathLength * 0.70; // 30% drawn at load
+        path.style.strokeDashoffset = pathLength * 0.80;
 
         let ticking = false;
 
         const updateScrollPath = () => {
+          const scrollY = window.scrollY;
           const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-          const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-          // From 30% drawn (scroll=0) to 100% drawn (scroll=100%)
-          const drawn = pathLength * (0.30 + scrollProgress * 0.70);
+          const scrollProgress = maxScroll > 0 ? Math.min(scrollY / maxScroll, 1) : 0;
+
+          // Draw path progressively: 20% → 100% as user scrolls
+          const drawn = pathLength * (0.20 + scrollProgress * 0.80);
           path.style.strokeDashoffset = pathLength - drawn;
+
+          // Move SVG upward as user scrolls so the path follows the page
+          // The path covers ~2700 units of height in SVG space
+          // We want to show different parts as user scrolls
+          const svgTotalHeight = 2730; // viewBox height
+          const viewportPortion = svg.clientHeight || window.innerHeight;
+          const totalPageHeight = document.documentElement.scrollHeight;
+          const scale = viewportPortion / svgTotalHeight;
+          const translateY = -scrollY * (1 - (viewportPortion / totalPageHeight));
+
+          svg.style.transform = `translateY(${translateY}px)`;
+
           ticking = false;
         };
 
