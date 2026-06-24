@@ -36,14 +36,15 @@
 
     .navbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 14px 40px;
-      border-radius: 0;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1180px, calc(100% - 24px));
+      padding: 16px 20px;
+      border-radius: 999px;
       background: rgba(9, 9, 11, .75);
       backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .08);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -2687,14 +2688,6 @@
       .navbar {
         gap: 10px !important;
         padding: 10px 12px !important;
-        top: 0 !important;
-        left: 0 !important;
-        transform: none !important;
-        width: 100% !important;
-        border-radius: 0 !important;
-        border-left: none !important;
-        border-right: none !important;
-        border-top: none !important;
       }
 
       .navbar .brand-clean svg {
