@@ -196,17 +196,17 @@
       if (path) {
         const pathLength = path.getTotalLength();
 
-        // Initialize: show knot (start at 15% drawn), full path hidden beyond
+        // Show the initial knot area (30% drawn) at page load
         path.style.strokeDasharray = pathLength + ' ' + pathLength;
-        path.style.strokeDashoffset = pathLength * 0.85; // 15% visible at load
+        path.style.strokeDashoffset = pathLength * 0.70; // 30% drawn at load
 
         let ticking = false;
 
         const updateScrollPath = () => {
           const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
           const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-          // From 15% drawn (scroll=0) to 100% drawn (scroll=100%)
-          const drawn = pathLength * (0.15 + scrollProgress * 0.85);
+          // From 30% drawn (scroll=0) to 100% drawn (scroll=100%)
+          const drawn = pathLength * (0.30 + scrollProgress * 0.70);
           path.style.strokeDashoffset = pathLength - drawn;
           ticking = false;
         };
@@ -220,4 +220,5 @@
 
         updateScrollPath(); // Draw initial state
       }
+
     });

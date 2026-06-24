@@ -25,7 +25,9 @@
       background: var(--off);
       color: var(--black);
       overflow-x: hidden;
+      position: relative;
     }
+
 
     .container {
       width: min(1180px, calc(100% - 36px));
@@ -3383,16 +3385,20 @@
 
     /* Scroll Line Follow Scroll Motion */
     .scroll-line-container {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 1;
       overflow: visible;
     }
 
     .scroll-line-container svg {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       overflow: visible;
@@ -3401,7 +3407,7 @@
     .scroll-follow-path {
       fill: none;
       stroke: #611cfc;
-      stroke-width: 2.5px;
+      stroke-width: 10px;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -3424,6 +3430,7 @@
         display: none !important;
       }
     }
+
 
 /* ============================================================
    WIZARD STYLES
