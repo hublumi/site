@@ -36,15 +36,14 @@
 
     .navbar {
       position: fixed;
-      top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1180px, calc(100% - 24px));
-      padding: 16px 20px;
-      border-radius: 999px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 14px 40px;
+      border-radius: 0;
       background: rgba(9, 9, 11, .75);
       backdrop-filter: blur(18px);
-      border: 1px solid rgba(255, 255, 255, .08);
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
       display: flex;
       justify-content: space-between;
       align-items: center;
