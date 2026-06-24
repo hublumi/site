@@ -613,8 +613,9 @@
 
     @media(max-width:980px) {
       .hero {
-        padding: 160px 0 60px !important;
+        padding: 90px 0 40px !important;
         align-items: flex-start !important;
+        text-align: center;
       }
 
       .hero-grid,
@@ -3035,9 +3036,9 @@
     /* --- CORREÇÃO MOBILE HERO (TEXTO E ESPAÇAMENTO) --- */
     @media (max-width: 768px) {
 
-      /* 1. Mantém a descida do texto, mas corta o espaço sobrando embaixo dele */
+      /* 1. Reduz espaço acima do texto na hero */
       .hero-left {
-        margin-top: 140px !important;
+        margin-top: 20px !important;
         padding-bottom: 0px !important;
         margin-bottom: 0px !important;
       }
@@ -3056,6 +3057,11 @@
       .hero-left h1 {
         font-size: 38px !important;
         line-height: 1.15 !important;
+      }
+
+      /* 5. Centraliza botão na hero */
+      .hero-left .actions {
+        justify-content: center;
       }
     }
     /* Chat Visibility State */
@@ -3438,7 +3444,11 @@
 
     @media (max-width: 980px) {
       .scroll-line-container {
-        display: none !important;
+        display: block !important;
+      }
+
+      .scroll-follow-path {
+        stroke-width: 6px;
       }
     }
 
