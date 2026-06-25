@@ -1,8 +1,8 @@
     // Configuration
     const CONFIG = {
-      SUPABASE_URL: "https://tqdoscpjgpgflledbdag.supabase.co",
-      SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZG9zY3BqZ3BnZmxsZWRiZGFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjQwMTIsImV4cCI6MjA5NjAwMDAxMn0.n4iuU6uzW49BeafN6LjD0kC6vNWjf5AZozisM-ta12Q",
-      GEMINI_API_KEY: import.meta.env.VITE_GEMINI_API_KEY || "",
+      SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || "", 
+      SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || "", 
+      GEMINI_API_KEY: import.meta.env.VITE_GEMINI_API_KEY || "", 
       GEMINI_MODEL: import.meta.env.VITE_GEMINI_MODEL || "gemini-1.5-flash"
     };
 
@@ -207,7 +207,7 @@
             // Wait one frame so scrollHeight is final after layout
             requestAnimationFrame(() => {
               const bodyH  = document.documentElement.scrollHeight;
-              const vbH    = 2730;   // our viewBox height
+              const vbH    = 3800;   // our viewBox height
               const scaleY = bodyH / vbH;          // px per SVG-unit (vertical)
               const vbW    = window.innerWidth / scaleY; // SVG-units visible horizontally
               const knotCX = 700;                  // horizontal centre of knot cluster
@@ -217,7 +217,7 @@
               initAnimation();
             });
           } else {
-            svg.setAttribute('viewBox', '-320 -50 1400 2730');
+            svg.setAttribute('viewBox', '-320 -50 1400 3800');
             svg.setAttribute('preserveAspectRatio', 'none');
             initAnimation();
           }
@@ -226,15 +226,14 @@
         function initAnimation() {
           const pathLength = path.getTotalLength();
           path.style.strokeDasharray  = pathLength + ' ' + pathLength;
-          path.style.strokeDashoffset = pathLength * 0.70; // 30% drawn at load
+          path.style.strokeDashoffset = pathLength * 0.68; // 32% drawn at load (shows the Hero knot)
 
           let ticking = false;
 
           function updateScrollPath() {
             const maxScroll     = document.documentElement.scrollHeight - window.innerHeight;
             const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-            // Use Math.sqrt for a non-linear drawing rate: draws much faster at the beginning of the scroll
-            const drawn = pathLength * (0.30 + Math.sqrt(scrollProgress) * 0.70);
+            const drawn = pathLength * (0.32 + scrollProgress * 0.68);
             path.style.strokeDashoffset = pathLength - drawn;
             ticking = false;
           }
