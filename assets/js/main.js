@@ -224,16 +224,32 @@
         }
 
         function initAnimation() {
+          const isMobile = window.innerWidth < 980;
           const pathLength = path.getTotalLength();
           path.style.strokeDasharray  = pathLength + ' ' + pathLength;
-          path.style.strokeDashoffset = pathLength * 0.68; // 32% drawn at load (shows the Hero knot)
+          
+          // No mobile começa 0% desenhado (esconde o nó da Hero). No desktop começa com 32% (mostra o nó).
+          if (isMobile) {
+            path.style.strokeDashoffset = pathLength;
+          } else {
+            path.style.strokeDashoffset = pathLength * 0.68;
+          }
 
           let ticking = false;
 
           function updateScrollPath() {
             const maxScroll     = document.documentElement.scrollHeight - window.innerHeight;
             const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-            const drawn = pathLength * (0.32 + scrollProgress * 0.68);
+            
+            let drawn;
+            if (isMobile) {
+              // No mobile, a linha surge progressivamente do 0% ao 100% conforme scrolla
+              drawn = pathLength * scrollProgress;
+            } else {
+              // No desktop, começa em 32% e preenche o resto
+              drawn = pathLength * (0.32 + scrollProgress * 0.68);
+            }
+            
             path.style.strokeDashoffset = pathLength - drawn;
             ticking = false;
           }
