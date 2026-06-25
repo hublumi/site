@@ -1,8 +1,8 @@
     // Configuration
     const CONFIG = {
-      SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL || "", 
-      SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_ANON_KEY || "", 
-      GEMINI_API_KEY: import.meta.env.VITE_GEMINI_API_KEY || "", 
+      SUPABASE_URL: "https://tqdoscpjgpgflledbdag.supabase.co",
+      SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZG9zY3BqZ3BnZmxsZWRiZGFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjQwMTIsImV4cCI6MjA5NjAwMDAxMn0.n4iuU6uzW49BeafN6LjD0kC6vNWjf5AZozisM-ta12Q",
+      GEMINI_API_KEY: import.meta.env.VITE_GEMINI_API_KEY || "",
       GEMINI_MODEL: import.meta.env.VITE_GEMINI_MODEL || "gemini-1.5-flash"
     };
 

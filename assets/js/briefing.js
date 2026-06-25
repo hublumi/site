@@ -8,8 +8,8 @@ function getSupabase() {
   if (supabase) return supabase;
   try {
     if (window.supabase) {
-      const url = (import.meta.env.VITE_SUPABASE_URL || "").replace(/^["']|["']$/g, "");
-      const key = (import.meta.env.VITE_SUPABASE_ANON_KEY || "").replace(/^["']|["']$/g, "");
+      const url = "https://tqdoscpjgpgflledbdag.supabase.co";
+      const key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRxZG9zY3BqZ3BnZmxsZWRiZGFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0MjQwMTIsImV4cCI6MjA5NjAwMDAxMn0.n4iuU6uzW49BeafN6LjD0kC6vNWjf5AZozisM-ta12Q";
       if (!url || !key) {
         console.warn("Supabase URL or Anon Key is missing in environment variables.");
         return null;
