@@ -290,8 +290,6 @@ function renderStep(group, direction = 'forward') {
               contact_name: nameVal,
               email: emailVal,
               company_name: 'Pendente',
-              segment: 'Pendente',
-              phone: 'Pendente',
               full_payload: { name: nameVal, email: emailVal }
             }]);
         }
@@ -572,8 +570,7 @@ async function handleSubmit() {
           contact_name: payload['Responsável pelo briefing'],
           email: payload['E-mail'],
           phone: payload['Telefone/WhatsApp'],
-          full_payload: payload,
-          file_urls: []
+          full_payload: payload
         }]);
       dbError = error;
     } else {

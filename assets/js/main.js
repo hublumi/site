@@ -233,7 +233,8 @@
           function updateScrollPath() {
             const maxScroll     = document.documentElement.scrollHeight - window.innerHeight;
             const scrollProgress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
-            const drawn = pathLength * (0.30 + scrollProgress * 0.70);
+            // Use Math.sqrt for a non-linear drawing rate: draws much faster at the beginning of the scroll
+            const drawn = pathLength * (0.30 + Math.sqrt(scrollProgress) * 0.70);
             path.style.strokeDashoffset = pathLength - drawn;
             ticking = false;
           }
