@@ -3431,16 +3431,8 @@
       stroke-linejoin: round;
     }
 
-    /* Bring all content, sections to foreground */
-    .hero-grid,
-    .section > .container,
-    .cta-box > *,
-    .contact-grid,
-    footer > .container,
-    .chat-trigger,
-    .lumi-chat-container {
-      position: relative;
-      z-index: 2;
+    .mobile-only-path {
+      display: none;
     }
 
     @media (max-width: 980px) {
@@ -3453,6 +3445,26 @@
       .scroll-follow-path {
         stroke-width: 10px;
       }
+
+      .desktop-only-path {
+        display: none !important;
+      }
+
+      .mobile-only-path {
+        display: block !important;
+      }
+    }
+
+    /* Bring all content, sections to foreground */
+    .hero-grid,
+    .section > .container,
+    .cta-box > *,
+    .contact-grid,
+    footer > .container,
+    .chat-trigger,
+    .lumi-chat-container {
+      position: relative;
+      z-index: 2;
     }
 
 

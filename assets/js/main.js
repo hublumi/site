@@ -193,9 +193,14 @@
 
       // SVG Scroll Animation — draw path as user scrolls
       const svg  = document.getElementById('scroll-line-svg');
-      const path = document.querySelector('.scroll-follow-path');
 
-      if (svg && path) {
+      if (svg) {
+        function getActivePath() {
+          const isMobile = window.innerWidth < 980;
+          return isMobile 
+            ? document.querySelector('.mobile-only-path') 
+            : document.querySelector('.desktop-only-path');
+        }
 
         // --- Mobile viewBox fix ---
         // On mobile, the body is taller and the viewport narrower.
@@ -224,6 +229,9 @@
         }
 
         function initAnimation() {
+          const path = getActivePath();
+          if (!path) return;
+
           const isMobile = window.innerWidth < 980;
           const pathLength = path.getTotalLength();
           path.style.strokeDasharray  = pathLength + ' ' + pathLength;
